@@ -1,0 +1,155 @@
+.login-page {
+    min-height: 100vh;
+    min-width: 100vw;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.login-page__image-zone {
+    width: 60%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-zone__image img {
+    width: 100%;
+}
+
+.login-page__form-zone {
+    width: 40%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--cor-3);;
+}
+
+.form-zone__form {
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: .5rem;
+}
+
+.form__header-zone {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.header-zone__title h1 {
+    letter-spacing: .15rem;
+}
+
+
+.header-zone__button-zone {
+    width: 100%;
+    margin-top: 2rem;
+}
+
+.form__separator-zone {
+    padding: 3rem 0 3rem 0;
+}
+
+.form__inputs-zone {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.inputs-zone__input-text-zone {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.input-text-zone_email,
+.input-text-zone_password {
+    width: 100%;
+}
+
+
+.inputs-zone__checkbox-zone {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 2rem;
+}
+
+.form__button-zone {
+    width: 100%;
+    margin-top: 2rem;
+}
+
+
+@media only screen and (max-width: 1100px) {
+    .login-page {
+        flex-direction: column;
+        height: 100vh;
+        gap: 0;
+    }
+
+    .login-page__image-zone {
+        width: 100%;
+        height: 30vh;
+        padding: 1rem .5rem 1rem .5rem;
+    }
+
+    .image-zone__image {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .image-zone__image img {
+        height: 100% !important;
+    }
+
+    .login-page__form-zone {
+        align-items: unset;
+        justify-content: center;
+        width: 100%;
+        height: 70vh;
+    }
+
+    .login-page__form-zone .form-zone__form {
+        width: 70%;
+        min-width: 300px;
+        padding: 0;
+    }
+
+    .login-page__form-zone .form__header-zone {
+        gap: 0;
+    }
+
+    .login-page__form-zone .header-zone__button-zone {
+        margin-top: 1rem;
+    }
+
+    .login-page__form-zone .form__separator-zone {
+        padding: 1rem 0 1rem 0;
+    }
+
+    .login-page__form-zone .inputs-zone__checkbox-zone {
+        padding-bottom: .5rem;
+    }
+
+    .login-page__form-zone .form__button-zone {
+        margin-top: .5rem;
+    }
+
+}

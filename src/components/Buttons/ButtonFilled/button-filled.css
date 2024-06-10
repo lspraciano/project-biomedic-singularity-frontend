@@ -1,0 +1,17 @@
+.button-filled {
+    background-color: var(--cor-1) !important;
+    font-weight: 700 !important;
+    text-transform: unset !important;
+    color: var(--cor-2) !important;
+    width: 100% !important;
+    gap: .5rem !important;
+}
+
+.button-filled img {
+    width: 1rem !important;
+    height: 1rem !important;
+}
+
+.button-filled:hover {
+    background-color: var(--cor-1-dark) !important;
+}

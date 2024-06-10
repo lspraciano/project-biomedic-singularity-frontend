@@ -1,0 +1,10 @@
+version: "3.8"
+services:
+  front:
+    container_name: project-biomedic-singularity
+    image: lucaspraciano/project-biomedic-singularity
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    ports:
+      - "8001:8001"

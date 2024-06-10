@@ -1,0 +1,20 @@
+.input-text-filled {
+    width: 100% !important;
+}
+
+.input-text-filled label.Mui-focused {
+    color: var(--cor-2) !important;
+}
+
+.input-text-filled [class*="MuiInputBase-root-MuiFilledInput-root"]::after {
+    border-bottom: var(--cor-5) 2px solid !important;
+}
+
+.input-text-filled .MuiInputBase-input {
+    background-color: var(--cor-1) !important;
+    border-radius: .2rem !important;
+}
+
+.input-text-zone_email .MuiInputBase-root {
+    color: var(--cor-2) !important;
+}

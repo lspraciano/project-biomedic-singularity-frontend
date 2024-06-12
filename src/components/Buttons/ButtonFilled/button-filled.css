@@ -12,6 +12,14 @@
     height: 1rem !important;
 }
 
+.button-filled span {
+    margin: unset!important;
+}
+
+.button-filled span svg{
+    fill: var(--cor-2) !important;
+}
+
 .button-filled:hover {
     background-color: var(--cor-1-dark) !important;
 }

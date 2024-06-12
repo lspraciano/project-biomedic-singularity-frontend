@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "./button-filled.css";
+import "./button-unfilled.css";
 import Button from "@mui/material/Button";
 import {useNavigate} from 'react-router-dom';
 
-export const ButtonFilled = (
+export const ButtonUnFilled = (
     {
         id,
         text,
@@ -18,7 +18,7 @@ export const ButtonFilled = (
         <Button
             variant="contained"
             id={id}
-            className={"button-filled"}
+            className={"button-unfilled"}
             startIcon={
                 startIcon ?
                     startIcon
@@ -48,7 +48,7 @@ export const ButtonFilled = (
     );
 };
 
-ButtonFilled.propTypes = {
+ButtonUnFilled.propTypes = {
     id: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired,
     alt: PropTypes.string.isRequired,

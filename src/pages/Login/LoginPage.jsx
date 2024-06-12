@@ -5,6 +5,7 @@ import LogoGoogleIcon from "./images/google-icon.png";
 import {InputTextFilled} from "../../components/Inputs/InputTextFilled/InputTextFilled.jsx";
 import {ButtonFilled} from "../../components/Buttons/ButtonFilled/ButtonFilled.jsx";
 import {OurCheckBox} from "../../components/Inputs/CheckBox/CheckBox.jsx";
+import {Link} from "@mui/material";
 
 export const LoginPage = () => {
     return (
@@ -69,9 +70,7 @@ export const LoginPage = () => {
                                 />
                             </div>
                             <div className={"checkbox-zone__link"}>
-                                <p>
-                                    Recuperar Senha?
-                                </p>
+                                <Link href="/counter-cells" color="inherit" >Recuperar Senha?</Link>
                             </div>
                         </div>
                     </div>

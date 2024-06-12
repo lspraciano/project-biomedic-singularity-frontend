@@ -1,0 +1,18 @@
+.our-skeleton {
+    display: flex !important;
+    width: 100% !important;
+    max-width: unset !important;
+    height: 100% !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background-color: var(--cor-5) !important;
+    border-radius: .3rem !important;
+}
+
+.our-skeleton svg {
+    position: relative !important;
+    width: 50% !important;
+    height: 50% !important;
+    visibility: unset !important;
+    fill: var(--cor-2);
+}

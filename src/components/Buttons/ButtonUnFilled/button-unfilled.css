@@ -1,0 +1,21 @@
+.button-unfilled {
+    font-weight: 700 !important;
+    text-transform: unset !important;
+    width: 100% !important;
+    gap: .5rem !important;
+    background-color: transparent !important;
+    border: 1px solid var(--cor-1) !important;
+}
+
+.button-unfilled img {
+    width: 1rem !important;
+    height: 1rem !important;
+}
+
+.button-unfilled span {
+    margin: unset !important;
+}
+
+.button-unfilled:hover {
+    background-color: var(--cor-3) !important;
+}

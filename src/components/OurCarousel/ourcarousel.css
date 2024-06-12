@@ -1,0 +1,22 @@
+.image {
+    width: 15rem;
+    height: 10rem;
+    border-radius: .5rem;
+}
+
+.image1 {
+    background-color: #84ab4e;
+}
+
+.image2 {
+    background-color: #4dc7c7;
+}
+
+
+.image3 {
+    background-color: #b882ea;
+}
+
+.image4 {
+    background-color: #ffb2b2;
+}

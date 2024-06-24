@@ -20,7 +20,7 @@ export const Routers = () => {
                     {
                         path: "/counter-cells",
                         element: <CounterCellsPage/>
-                    },
+                    }
                 ]
             }
         ]

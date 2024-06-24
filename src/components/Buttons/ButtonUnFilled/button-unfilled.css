@@ -19,3 +19,7 @@
 .button-unfilled:hover {
     background-color: var(--cor-3) !important;
 }
+
+.button-unfilled--disabled {
+    display: none !important;
+}

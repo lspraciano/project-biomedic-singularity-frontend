@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./button-unfilled.css";
 import Button from "@mui/material/Button";
-import {useNavigate} from 'react-router-dom';
 
 export const ButtonUnFilled = (
     {
@@ -10,26 +9,26 @@ export const ButtonUnFilled = (
         text,
         alt,
         icon,
-        startIcon
+        startIcon,
+        functionOnClick,
+        disabled = false
     }
 ) => {
-    const navigate = useNavigate();
+    const classNameToDisable = !disabled ? "" : "button-unfilled--disabled";
+
     return (
         <Button
             variant="contained"
             id={id}
-            className={"button-unfilled"}
+            className={"button-unfilled " + classNameToDisable}
             startIcon={
                 startIcon ?
                     startIcon
                     :
                     null
             }
-            onClick={
-                () => {
-                    navigate("/counter-cells")
-                }
-            }
+            onClick={functionOnClick}
+            disabled={disabled}
         >
             {
                 icon ?
@@ -53,5 +52,7 @@ ButtonUnFilled.propTypes = {
     text: PropTypes.string.isRequired,
     alt: PropTypes.string.isRequired,
     icon: PropTypes.string,
-    startIcon: PropTypes.object
+    startIcon: PropTypes.object,
+    functionOnClick: PropTypes.func,
+    disabled: PropTypes.bool,
 };

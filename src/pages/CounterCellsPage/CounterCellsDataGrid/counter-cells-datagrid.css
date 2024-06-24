@@ -1,0 +1,13 @@
+.counter-cells-datagrid {
+    height: 100% !important;
+    background-color: transparent !important;
+
+}
+
+.counter-cells-datagrid .MuiDataGrid-main {
+    background-color: transparent;
+}
+
+.MuiDataGrid-topContainer [role=row]{
+    background-color: var(--cor-4) !important;
+}

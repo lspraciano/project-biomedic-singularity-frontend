@@ -9,21 +9,15 @@ export const drawBoxes = (
     const colors = new Colors();
     const classNamesList = yolo_json_data["class_name_list"];
     const middleY = canvasHeight / 2;
-    const lineStartX = canvasWidth * 0.1;
-    const lineEndX = canvasWidth * 0.9;
+    const lineStartX = canvasWidth * 0.04;
+    const lineEndX = canvasWidth * 0.96;
 
-    canvasContext.strokeStyle = '#48F90A';
-    canvasContext.lineWidth = 2;
     canvasContext.beginPath();
     canvasContext.moveTo(lineStartX, middleY);
     canvasContext.lineTo(lineEndX, middleY);
+    canvasContext.strokeStyle = '#48F90A';
+    canvasContext.lineWidth = 3;
     canvasContext.stroke();
-
-    canvasContext.strokeStyle = 'red';
-    canvasContext.lineWidth = 1;
-    canvasContext.font = "9px Arial";
-    canvasContext.fillStyle = "black";
-
 
     yolo_json_data["xyxyn"].forEach(
         (detection, index) => {
@@ -33,17 +27,23 @@ export const drawBoxes = (
             const bboxX2 = x2 * canvasWidth;
             const bboxY2 = y2 * canvasHeight;
             const classId = yolo_json_data["detect_class_id_list"][index];
+            const trackId = yolo_json_data["track_id_list"][index];
             const className = classNamesList[classId];
             const classConf = yolo_json_data["detect_object_confidence_list"][index].toFixed(2);
 
             const bboxWidth = bboxX2 - bboxX1;
             const bboxHeight = bboxY2 - bboxY1;
-            const bboxText = `${className} | ${classConf}`
+
+            const bboxText = `${trackId} | ${className} | ${classConf}`
             const textWidth = canvasContext.measureText(bboxText).width;
-            const textX = bboxX1 + (bboxWidth - textWidth) / 2;
-            const textY = bboxY1 - 4;
+            const textX = (bboxX1 + (bboxWidth - textWidth) / 2);
+            const textY = bboxY1 - 10;
 
 
+            canvasContext.strokeStyle = colors.get(classId);
+            canvasContext.font = "16px Arial";
+            canvasContext.fillStyle = "black";
+            canvasContext.lineWidth = 3;
             canvasContext.fillText(bboxText, textX, textY);
             canvasContext.strokeRect(bboxX1, bboxY1, bboxWidth, bboxHeight);
 
@@ -51,10 +51,8 @@ export const drawBoxes = (
             const centerY = bboxY1 + bboxHeight / 2;
 
             if (centerX >= lineStartX && centerX <= lineEndX && centerY > middleY) {
-                console.log(`Detecção ${index} (${className}) ultrapassou a linha verde.`);
-                canvasContext.strokeStyle = 'blue';
+                canvasContext.strokeStyle = '#48F90A';
                 canvasContext.strokeRect(bboxX1, bboxY1, bboxWidth, bboxHeight);
-                canvasContext.strokeStyle = 'red';
             }
 
         }

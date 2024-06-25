@@ -14,15 +14,21 @@ import {CounterCellsDataGrid} from "./CounterCellsDataGrid/CounterCellsDataGrig.
 import TableChartIcon from '@mui/icons-material/TableChart';
 import Webcam from "react-webcam";
 import {plotImageOnCanvas} from "./utils/plotImageOnCanvas.js";
+import CancelIcon from '@mui/icons-material/Cancel';
 
 export const CounterCellsPage = () => {
+    const webSocketUrl = 'ws://localhost:8000/v1/white-blood-cells/track/ws';
+
+    const {isWebcamOpen, turnOnWebcam} = useContext(CounterCellsContext);
+
+    const [resetPersist, setResetPersist] = useState(false);
+
     const webcamRef = useRef(null);
     const canvasRef = useRef(null);
-    const counterCells = useState({});
     const websocketRef = useRef(null);
-    const {isWebcamOpen, turnOnWebcam} = useContext(CounterCellsContext);
+    const resetPersistRef = useRef(resetPersist);
     const intervalIdRef = useRef(null);
-    const webSocketUrl = 'ws://localhost:8000/v1/white-blood-cells/track/ws';
+
 
     useEffect(() => {
         if (isWebcamOpen) {
@@ -36,6 +42,13 @@ export const CounterCellsPage = () => {
         };
     }, [isWebcamOpen]);
 
+
+    useEffect(
+        () => {
+            resetPersistRef.current = resetPersist;
+        }, [resetPersist]
+    );
+
     const startStreaming = () => {
         websocketRef.current = new WebSocket(webSocketUrl);
 
@@ -45,7 +58,12 @@ export const CounterCellsPage = () => {
 
         websocketRef.current.onmessage = (event) => {
             const yolo_json_data = JSON.parse(event.data);
-            const imageSrc = webcamRef.current.getScreenshot({width: 1080, height: 1080});
+            const imageSrc = webcamRef.current.getScreenshot(
+                {
+                    width: 640,
+                    height: 640
+                }
+            );
             if (imageSrc && imageSrc.startsWith("data:image/jpeg;base64,")) {
                 plotImageOnCanvas(canvasRef, imageSrc, yolo_json_data);
             }
@@ -60,14 +78,26 @@ export const CounterCellsPage = () => {
         };
 
         intervalIdRef.current = setInterval(() => {
+            const resetModelPersist = resetPersistRef.current
             const imageSrc = webcamRef.current.getScreenshot(
                 {width: 640, height: 640}
             );
 
             if (imageSrc && imageSrc.startsWith("data:image/jpeg;base64,")) {
-                websocketRef.current.send(imageSrc);
+                websocketRef.current.send(
+                    JSON.stringify(
+                        {
+                            image_data: imageSrc,
+                            reset_persist: resetModelPersist
+                        }
+                    )
+                );
+
+                if (resetModelPersist) {
+                    setResetPersist(false);
+                }
             }
-        }, 300);
+        }, 50);
     };
 
     const stopStreaming = () => {
@@ -78,6 +108,10 @@ export const CounterCellsPage = () => {
             clearInterval(intervalIdRef.current);
         }
     };
+
+    const resetModelPersist = () => {
+        setResetPersist(true);
+    }
 
     return (
         <div
@@ -137,16 +171,27 @@ export const CounterCellsPage = () => {
                     <div>
                         <ButtonUnFilled
                             variant="contained"
+                            id={"button-reset"}
+                            text={"Reiniciar"}
+                            startIcon={<ReplayCircleFilledIcon/>}
+                            alt={"botão para reiniciar contagem"}
+                            disabled={!isWebcamOpen}
+                            functionOnClick={resetModelPersist}
+                        />
+                    </div>
+                    <div>
+                        <ButtonUnFilled
+                            variant="contained"
                             id={"button-refresh-or-start"}
                             text={
                                 isWebcamOpen ?
-                                    "Reiniciar"
+                                    "Fechar"
                                     :
                                     "Iniciar"
                             }
                             startIcon={
                                 isWebcamOpen ?
-                                    <ReplayCircleFilledIcon/>
+                                    <CancelIcon/>
                                     :
                                     <PlayCircleFilledWhiteIcon/>
                             }

@@ -1,6 +1,7 @@
 import {drawBoxes} from "./drawBoxes.js";
 
 const image = new Image();
+
 export const plotImageOnCanvas = (
     canvasRef,
     imageSrc,
@@ -9,14 +10,20 @@ export const plotImageOnCanvas = (
     const canvas = canvasRef.current;
     const context = canvas.getContext('2d');
 
-    image.onload = () => {
-        canvas.width = image.width;
-        canvas.height = image.height;
+    return new Promise(
+        (resolve, reject) => {
+            image.onload = () => {
+                canvas.width = image.width;
+                canvas.height = image.height;
 
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        context.drawImage(image, 0, 0, canvas.width, canvas.height);
-        drawBoxes(canvasRef, yolo_json_data);
-    };
+                context.clearRect(0, 0, canvas.width, canvas.height);
+                context.drawImage(image, 0, 0, canvas.width, canvas.height);
+                const output = drawBoxes(canvasRef, yolo_json_data);
+                resolve(output);
+            };
 
-    image.src = imageSrc;
+            image.onerror = reject;
+            image.src = imageSrc;
+        }
+    );
 };

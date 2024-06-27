@@ -2,15 +2,25 @@ export const drawBoxes = (
     canvasRef,
     yolo_json_data
 ) => {
+    let detectionCrossedLine = false;
     const canvas = canvasRef.current;
     const canvasContext = canvas.getContext('2d');
     const canvasWidth = canvas.width;
     const canvasHeight = canvas.height;
     const colors = new Colors();
-    const classNamesList = yolo_json_data["class_name_list"];
+    const classNamesDict = yolo_json_data["class_name_list"];
+    const classNamesList = Object.values(classNamesDict)
+    const outputDictionary = {};
     const middleY = canvasHeight / 2;
+    const lineThickness = 3;
     const lineStartX = canvasWidth * 0.04;
     const lineEndX = canvasWidth * 0.96;
+
+    classNamesList.forEach(
+        name => {
+            outputDictionary[name] = new Set();
+        }
+    );
 
     canvasContext.beginPath();
     canvasContext.moveTo(lineStartX, middleY);
@@ -28,7 +38,7 @@ export const drawBoxes = (
             const bboxY2 = y2 * canvasHeight;
             const classId = yolo_json_data["detect_class_id_list"][index];
             const trackId = yolo_json_data["track_id_list"][index];
-            const className = classNamesList[classId];
+            const className = classNamesDict[classId];
             const classConf = yolo_json_data["detect_object_confidence_list"][index].toFixed(2);
 
             const bboxWidth = bboxX2 - bboxX1;
@@ -48,15 +58,25 @@ export const drawBoxes = (
             canvasContext.strokeRect(bboxX1, bboxY1, bboxWidth, bboxHeight);
 
             const centerX = bboxX1 + bboxWidth / 2;
-            const centerY = bboxY1 + bboxHeight / 2;
+            const lineTopY = middleY - lineThickness / 2;
+            const lineBottomY = middleY + lineThickness / 2;
 
-            if (centerX >= lineStartX && centerX <= lineEndX && centerY > middleY) {
-                canvasContext.strokeStyle = '#48F90A';
-                canvasContext.strokeRect(bboxX1, bboxY1, bboxWidth, bboxHeight);
+            if (centerX >= lineStartX && centerX <= lineEndX) {
+                if ((bboxY1 < middleY && bboxY2 > middleY) ||
+                    (bboxY1 < lineTopY && bboxY2 > lineBottomY) ||
+                    (bboxY1 < lineBottomY && bboxY2 > lineTopY)) {
+                    canvasContext.strokeStyle = '#48F90A';
+                    canvasContext.strokeRect(bboxX1, bboxY1, bboxWidth, bboxHeight);
+                    outputDictionary[className].add(trackId);
+                    detectionCrossedLine = true;
+                }
             }
 
         }
     );
+
+
+    return detectionCrossedLine ? outputDictionary : null
 };
 
 class Colors {

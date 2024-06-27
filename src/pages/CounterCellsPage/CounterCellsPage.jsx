@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useRef, useState} from "react";
+import React, {useContext} from 'react';
 import "./counter-cells-page.css";
 import VideoCamIcon from '@mui/icons-material/Videocam';
 import {InputTextFilled} from "../../components/Inputs/InputTextFilled/InputTextFilled.jsx";
@@ -7,157 +7,47 @@ import SaveIcon from "@mui/icons-material/Save";
 import {ButtonUnFilled} from "../../components/Buttons/ButtonUnFilled/ButtonUnFilled.jsx";
 import {OurSkeleton} from "../../components/Skeleton/OurSkeleton/OurSkeleton.jsx";
 import VideoCamOffIcon from '@mui/icons-material/VideocamOff';
-import {CounterCellsContext} from "../../context/CounterCellsContext.jsx";
 import PlayCircleFilledWhiteIcon from "@mui/icons-material/PlayCircleFilledWhite";
 import {OurCarousel} from "../../components/OurCarousel/OurCarousel.jsx";
 import {CounterCellsDataGrid} from "./CounterCellsDataGrid/CounterCellsDataGrig.jsx";
 import TableChartIcon from '@mui/icons-material/TableChart';
 import Webcam from "react-webcam";
-import {plotImageOnCanvas} from "./utils/plotImageOnCanvas.js";
 import CancelIcon from '@mui/icons-material/Cancel';
+import {CounterCellsContext} from "../../context/CounterCellsContext.jsx";
 
 export const CounterCellsPage = () => {
-    const webSocketUrl = 'ws://localhost:8000/v1/white-blood-cells/track/ws';
-
-    const {isWebcamOpen, turnOnWebcam} = useContext(CounterCellsContext);
-
-    const [resetPersist, setResetPersist] = useState(false);
-
-    const webcamRef = useRef(null);
-    const canvasRef = useRef(null);
-    const websocketRef = useRef(null);
-    const resetPersistRef = useRef(resetPersist);
-    const intervalIdRef = useRef(null);
-
-
-    useEffect(() => {
-        if (isWebcamOpen) {
-            startStreaming();
-        } else {
-            stopStreaming();
-        }
-
-        return () => {
-            stopStreaming();
-        };
-    }, [isWebcamOpen]);
-
-
-    useEffect(
-        () => {
-            resetPersistRef.current = resetPersist;
-        }, [resetPersist]
-    );
-
-    const startStreaming = () => {
-        websocketRef.current = new WebSocket(webSocketUrl);
-
-        websocketRef.current.onopen = () => {
-            console.log('Conexão WebSocket estabelecida');
-        };
-
-        websocketRef.current.onmessage = (event) => {
-            const yolo_json_data = JSON.parse(event.data);
-            const imageSrc = webcamRef.current.getScreenshot(
-                {
-                    width: 640,
-                    height: 640
-                }
-            );
-            if (imageSrc && imageSrc.startsWith("data:image/jpeg;base64,")) {
-                plotImageOnCanvas(canvasRef, imageSrc, yolo_json_data);
-            }
-        };
-
-        websocketRef.current.onerror = (error) => {
-            console.error('Erro no WebSocket:', error);
-        };
-
-        websocketRef.current.onclose = () => {
-            console.log('Conexão WebSocket fechada');
-        };
-
-        intervalIdRef.current = setInterval(() => {
-            const resetModelPersist = resetPersistRef.current
-            const imageSrc = webcamRef.current.getScreenshot(
-                {width: 640, height: 640}
-            );
-
-            if (imageSrc && imageSrc.startsWith("data:image/jpeg;base64,")) {
-                websocketRef.current.send(
-                    JSON.stringify(
-                        {
-                            image_data: imageSrc,
-                            reset_persist: resetModelPersist
-                        }
-                    )
-                );
-
-                if (resetModelPersist) {
-                    setResetPersist(false);
-                }
-            }
-        }, 50);
-    };
-
-    const stopStreaming = () => {
-        if (websocketRef.current) {
-            websocketRef.current.close();
-        }
-        if (intervalIdRef.current) {
-            clearInterval(intervalIdRef.current);
-        }
-    };
-
-    const resetModelPersist = () => {
-        setResetPersist(true);
-    }
+    const {
+        isWebsocketOpen,
+        toggleWebsocketConnection,
+        resetPersist,
+        outputCellCount,
+        showWebcam,
+        toggleShowWebcam,
+        webcamRef,
+        canvasRef,
+        resetModelPersist
+    } = useContext(CounterCellsContext);
 
     return (
-        <div
-            className={"counter-cells-page"}
-
-        >
-            <div
-                className={"counter-cells-page__header"}
-            >
-                <div
-                    className={"header__title"}
-                >
-                    <h1>
-                        Contador Diferencial
-                    </h1>
+        <div className={"counter-cells-page"}>
+            <div className={"counter-cells-page__header"}>
+                <div className={"header__title"}>
+                    <h1>Contador Diferencial</h1>
                 </div>
-                <div
-                    className={"header__cam-icon"}
-                >
+                <div className={"header__cam-icon"}>
                     <VideoCamIcon/>
                 </div>
             </div>
-            <div
-                className={"counter-cells-page__actions"}
-            >
-                <div
-                    className={"actions__inputs"}
-                >
+            <div className={"counter-cells-page__actions"}>
+                <div className={"actions__inputs"}>
                     <div>
-                        <InputTextFilled
-                            id="identificador"
-                            label="Identificador"
-                            size="small"
-                        />
+                        <InputTextFilled id="identificador" label="Identificador" size="small"/>
                     </div>
                     <div>
-                        <InputTextFilled
-                            id="counter-lomit"
-                            label="Limite Contagem"
-                            size="small"
-                        />
+                        <InputTextFilled id="counter-lomit" label="Limite Contagem" size="small"/>
                     </div>
                 </div>
-                <div
-                    className={"header__buttons"}
-                >
+                <div className={"header__buttons"}>
                     <div>
                         <ButtonUnFilled
                             variant="contained"
@@ -165,7 +55,7 @@ export const CounterCellsPage = () => {
                             text={"Salvar"}
                             startIcon={<SaveIcon/>}
                             alt={"botão para salvar"}
-                            disabled={!isWebcamOpen}
+                            disabled={!isWebsocketOpen}
                         />
                     </div>
                     <div>
@@ -175,7 +65,7 @@ export const CounterCellsPage = () => {
                             text={"Reiniciar"}
                             startIcon={<ReplayCircleFilledIcon/>}
                             alt={"botão para reiniciar contagem"}
-                            disabled={!isWebcamOpen}
+                            disabled={!isWebsocketOpen}
                             functionOnClick={resetModelPersist}
                         />
                     </div>
@@ -183,87 +73,43 @@ export const CounterCellsPage = () => {
                         <ButtonUnFilled
                             variant="contained"
                             id={"button-refresh-or-start"}
-                            text={
-                                isWebcamOpen ?
-                                    "Fechar"
-                                    :
-                                    "Iniciar"
-                            }
-                            startIcon={
-                                isWebcamOpen ?
-                                    <CancelIcon/>
-                                    :
-                                    <PlayCircleFilledWhiteIcon/>
-                            }
+                            text={isWebsocketOpen ? "Fechar" : "Iniciar"}
+                            startIcon={isWebsocketOpen ? <CancelIcon/> : <PlayCircleFilledWhiteIcon/>}
                             alt={"botão para iniciar ou reiniciar contagem"}
-                            functionOnClick={turnOnWebcam}
+                            functionOnClick={toggleWebsocketConnection}
                         />
                     </div>
                 </div>
             </div>
-            <div
-                className={"counter-cells-page__data"}
-            >
-                <div
-                    className={"data_cam-image"}
-                >
-                    {
-                        !isWebcamOpen ?
-                            <OurSkeleton
-                                id={"cam-skeleton"}
-                                icon={<VideoCamOffIcon/>}
+            <div className={"counter-cells-page__data"}>
+                <div className={"data_cam-image"}>
+                    {!isWebsocketOpen ? (
+                        <OurSkeleton id={"cam-skeleton"} icon={<VideoCamOffIcon/>}/>
+                    ) : (
+                        <div className={"data_cam-image__image-zone"}>
+                            <Webcam
+                                audio={false}
+                                className={"image-zone__webcam--open"}
+                                ref={webcamRef}
+                                screenshotFormat={"image/jpeg"}
+                                videoConstraints={{facingMode: "environment"}}
                             />
-                            :
-                            <div
-                                className={"data_cam-image__image-zone"}
-                            >
-                                <Webcam
-                                    audio={false}
-                                    className={"image-zone__webcam"}
-                                    ref={webcamRef}
-                                    screenshotFormat={"image/jpeg"}
-                                    videoConstraints={
-                                        {
-                                            facingMode: "environment"
-                                        }
-                                    }
-                                >
-                                </Webcam>
-                                <canvas
-                                    ref={canvasRef}
-                                    className={"image-zone__canvas"}
-                                >
-
-                                </canvas>
-                            </div>
-
-                    }
+                            <canvas ref={canvasRef} className={"image-zone__canvas"}/>
+                        </div>
+                    )}
                 </div>
-                <div
-                    className={"data_table"}
-                >
-                    {
-                        !isWebcamOpen ?
-                            <OurSkeleton
-                                id={"date-table"}
-                                icon={<TableChartIcon/>}
-                            />
-                            :
-                            <CounterCellsDataGrid/>
-                    }
+                <div className={"data_table"}>
+                    {!isWebsocketOpen ? (
+                        <OurSkeleton id={"date-table"} icon={<TableChartIcon/>}/>
+                    ) : (
+                        <CounterCellsDataGrid data={outputCellCount}/>
+                    )}
                 </div>
             </div>
-            <div
-                className={"counter-cells-page__image-log"}
-            >
-                <div
-                    className={"image-log__carousel"}
-                >
+            <div className={"counter-cells-page__image-log"}>
+                <div className={"image-log__carousel"}>
                     <div>
-                        <OurCarousel
-                            deviceType={"desktop"}
-                        />
-
+                        <OurCarousel deviceType={"desktop"}/>
                     </div>
                 </div>
             </div>

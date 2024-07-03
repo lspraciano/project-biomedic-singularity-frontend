@@ -4,48 +4,26 @@ import "./button-filled.css";
 import Button from "@mui/material/Button";
 import {useNavigate} from 'react-router-dom';
 
-export const ButtonFilled = (
-    {
-        id,
-        text,
-        alt,
-        icon,
-        startIcon
-    }
-) => {
+export const ButtonFilled = ({
+                                 id, text, alt, icon, startIcon
+                             }) => {
     const navigate = useNavigate();
-    return (
-        <Button
-            variant="contained"
-            id={id}
-            className={"button-filled"}
-            startIcon={
-                startIcon ?
-                    startIcon
-                    :
-                    null
-            }
-            onClick={
-                () => {
-                    navigate("/counter-cells")
-                }
-            }
-        >
-            {
-                icon ?
-                    <img
-                        src={icon}
-                        alt={alt}
-                    />
-                    :
-                    <>
-                    </>
-            }
-            {
-                text
-            }
-        </Button>
-    );
+    return (<Button
+        variant="contained"
+        id={id}
+        className={"button-filled"}
+        startIcon={startIcon ? startIcon : null}
+        onClick={() => {
+            navigate("/counter-cells")
+        }}
+    >
+        {icon ? <img
+            src={icon}
+            alt={alt}
+        /> : <>
+        </>}
+        {text}
+    </Button>);
 };
 
 ButtonFilled.propTypes = {

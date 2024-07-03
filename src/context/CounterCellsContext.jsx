@@ -49,7 +49,7 @@ export const CounterCellsProvider = ({children}) => {
             const imageSrc = webcamRef.current.getScreenshot({width: 640, height: 640});
 
             if (imageSrc && imageSrc.startsWith("data:image/jpeg;base64,")) {
-                newOutput = await plotImageOnCanvas(canvasRef, imageSrc, yolo_json_data);
+                newOutput = await plotImageOnCanvas(canvasRef, imageSrc, yolo_json_data, outputCellCountRef.current);
 
                 if (newOutput) {
                     const currentCellCount = _.cloneDeep(outputCellCountRef.current);
@@ -76,20 +76,20 @@ export const CounterCellsProvider = ({children}) => {
             const imageSrc = webcamRef.current.getScreenshot({width: 640, height: 640});
 
             if (imageSrc && imageSrc.startsWith("data:image/jpeg;base64,")) {
-                websocketRef.current.send(
-                    JSON.stringify({image_data: imageSrc, reset_persist: resetModelPersist})
-                );
+                websocketRef.current.send(JSON.stringify({image_data: imageSrc, reset_persist: resetModelPersist}));
 
                 if (resetModelPersist) {
                     setResetPersist(false);
                 }
             }
-        }, 50);
+        }, 18);
     };
 
     const stopStreaming = () => {
         if (websocketRef.current) {
             websocketRef.current.close();
+            outputCellCountRef.current = {};
+            setOutputCellCount({});
         }
         if (intervalIdRef.current) {
             clearInterval(intervalIdRef.current);
@@ -102,7 +102,6 @@ export const CounterCellsProvider = ({children}) => {
 
     const toggleShowWebcam = () => {
         setShowWebcam(prevState => !prevState);
-        console.log("asdasd");
     };
 
     const resetModelPersist = () => {
@@ -111,23 +110,21 @@ export const CounterCellsProvider = ({children}) => {
         setOutputCellCount({});
     };
 
-    return (
-        <CounterCellsContext.Provider
-            value={{
-                isWebsocketOpen,
-                toggleWebsocketConnection,
-                resetPersist,
-                outputCellCount,
-                showWebcam,
-                toggleShowWebcam,
-                webcamRef,
-                canvasRef,
-                resetModelPersist
-            }}
-        >
-            {children}
-        </CounterCellsContext.Provider>
-    );
+    return (<CounterCellsContext.Provider
+        value={{
+            isWebsocketOpen,
+            toggleWebsocketConnection,
+            resetPersist,
+            outputCellCount,
+            showWebcam,
+            toggleShowWebcam,
+            webcamRef,
+            canvasRef,
+            resetModelPersist
+        }}
+    >
+        {children}
+    </CounterCellsContext.Provider>);
 };
 
 CounterCellsProvider.propTypes = {

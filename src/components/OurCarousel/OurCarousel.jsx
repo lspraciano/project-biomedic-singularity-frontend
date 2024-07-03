@@ -14,36 +14,32 @@ const responsive = {
     }
 };
 
-export const OurCarousel = (
-    {
-        deviceType
-    }
-) => {
-    return (
-        <Carousel
-            swipeable={false}
-            draggable={false}
-            showDots={true}
-            responsive={responsive}
-            ssr={true}
-            infinite={true}
-            autoPlay={deviceType !== "mobile"}
-            autoPlaySpeed={1000}
-            keyBoardControl={true}
-            customTransition="all .5"
-            transitionDuration={500}
-            containerClass="carousel-container"
-            removeArrowOnDeviceType={["tablet", "mobile"]}
-            deviceType={deviceType}
-            dotListClass="custom-dot-list-style"
-            itemClass="carousel-item-padding-40-px"
-        >
-            <div className={"image image1"}></div>
-            <div className={"image image2"}></div>
-            <div className={"image image3"}></div>
-            <div className={"image image4"}></div>
-        </Carousel>
-    );
+export const OurCarousel = ({
+                                deviceType
+                            }) => {
+    return (<Carousel
+        swipeable={false}
+        draggable={false}
+        showDots={true}
+        responsive={responsive}
+        ssr={true}
+        infinite={true}
+        autoPlay={deviceType !== "mobile"}
+        autoPlaySpeed={1000}
+        keyBoardControl={true}
+        customTransition="all .5"
+        transitionDuration={500}
+        containerClass="carousel-container"
+        removeArrowOnDeviceType={["tablet", "mobile"]}
+        deviceType={deviceType}
+        dotListClass="custom-dot-list-style"
+        itemClass="carousel-item-padding-40-px"
+    >
+        <div className={"image image1"}></div>
+        <div className={"image image2"}></div>
+        <div className={"image image3"}></div>
+        <div className={"image image4"}></div>
+    </Carousel>);
 };
 
 OurCarousel.propTypes = {

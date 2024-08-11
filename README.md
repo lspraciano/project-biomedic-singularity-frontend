@@ -13,8 +13,28 @@
 ## 🎨 Telas
 
 1. Login
-2. Detecções
+2. Contador Diferencial
 
+
+### Login
+
+Esta tela permite o usuário realizar o login através do seu gmail ou 
+email e senha cadastrados. Estas funcionalidades ainda não foram implementadas
+então basta clicar no botão "Login" para ser redirecionando para tela
+de detecções
+
+### Contador Diferencial
+
+Nesta tela o usuário poderá clicar em "Iniciar" para que o seja estabelecida 
+a conexão entre o front e o backend via WebSocket. Após iniciar são habilitados
+os botões de "Salvar", "Reiniciar" e o botão "Iniciar" vira "Fechar". O "Salvar"
+ainda não foi implementado, o "Reiniciar" zera a contagem e o "Fechar" desliga a
+conexão estabelecida, cancelando tudo já feito. Ainda nesta tela podemos os 
+campos "Identificador" e o "Limite Contagem", que ainda não foram implementados.
+
+Abaixo temos um vídeo demonstrativo
+
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/bPPGjMr75gk/0.jpg)](https://www.youtube.com/watch?v=bPPGjMr75gk)
 
 ## 🚀 Clonando Projeto
 

@@ -11,7 +11,7 @@ export const CounterCellsProvider = (
         children
     }
 ) => {
-    const webSocketUrl = 'ws://localhost:8000/v1/white-blood-cells/track/ws';
+    const webSocketUrl = import.meta.env.VITE_WS_URL;
     const [isWebsocketOpen, setIsWebsocketOpen] = useState(false);
     const [showWebcam, setShowWebcam] = useState(false);
     const [resetPersist, setResetPersist] = useState(false);

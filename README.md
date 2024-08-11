@@ -1,8 +1,50 @@
-# React + Vite
+# project-biomedic-singularity
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+## ☑️ Andamento do Projeto
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Em Desenvolvimento
+
+
+## ☄️ Versão Atual
+
+- 0.1.0
+
+## 🎨 Telas
+
+1. Login
+2. Detecções
+
+
+## 🚀 Clonando Projeto
+
+Nesta seção, explicaremos como você pode realizar o download e
+rodar o projeto em sua máquina.
+
+### 📋 Pré-requisitos
+
+Antes de iniciar, verifique se você atende aos seguintes pré-requisitos:
+
+- Node 20.7.0
+
+### 🔧 Instalação
+
+Siga os passos abaixo para configurar o ambiente de desenvolvimento:
+
+1. Clonando o Repositório
+
+```bash
+git clone https://github.com/lspraciano/project-biomedic-singularity-frontend
+```
+
+2. No diretório raiz do projeto, instale as dependências com o comando
+
+```bash
+RUN npm install
+```
+
+3. Rode a Aplicação
+
+```bash
+RUN npm run dev
+```

@@ -1,4 +1,3 @@
-import React from 'react';
 import './our-image-list.css';
 
 
@@ -12,7 +11,6 @@ export const OurImageList = (
             className={"our-image-list"}
         >
             {
-                // eslint-disable-next-line react/prop-types
                 [...itemData].map(
                     (item, index) => {
                         return <img

@@ -1,6 +1,5 @@
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {CounterCellsPage} from "../pages/CounterCellsPage/CounterCellsPage.jsx";
-import React from "react";
 import {App} from "../App.jsx";
 import {NotFoundPage} from "../pages/NotFoundPage.jsx";
 import {LoginPage} from "../pages/Login/LoginPage.jsx";
